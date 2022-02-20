@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="730adc0a-505e-470f-848d-815573d5427a" />
+	<flow name="session01Flow1" doc:id="e8eb0ba7-90e0-4079-98ff-ec44a4550cd2" initialState="stopped">
+		<file:listener doc:name="On New or Updated File" doc:id="ec27da41-ba43-4d8c-8723-280ea1bf095a" config-ref="File_Config" directory="C:\AnypointStudio\new-files-2021\in">
+			<scheduling-strategy>
+				<fixed-frequency timeUnit="SECONDS" startDelay="1"/>
+			</scheduling-strategy>
+			<file:matcher filenamePattern="*.csv" />
+		</file:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="73f3d7e7-2ce2-43e7-9f9e-25f908e1fa80" message="------file was read---------" />
+		<logger level="INFO" doc:name="Logger" doc:id="9267498d-ffb0-4842-9252-e6fdb6101475" message="#[payload]"/>
+		<file:move doc:name="Move" doc:id="c03db99f-5e44-4902-b11b-6c2512ecead4" config-ref="File_Config" sourcePath="#[attributes.path]" targetPath="C:\AnypointStudio\new-files-2021\out" overwrite="true"/>
+		<logger level="INFO" doc:name="Logger" doc:id="0987132e-995e-44a4-a621-168b99aa691f" message="--------file moved----------"/>
+	</flow>
+</mule>
